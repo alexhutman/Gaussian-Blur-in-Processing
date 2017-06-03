@@ -1,10 +1,10 @@
 import java.util.Arrays;
 
 PImage img;
-String location = "papi.jpg";
+String location = "macplus.jpg";
 int kernelsize = 3; 
-int kernelwidth = floor((float)(kernelsize)/2);
-double sigma = 1;
+int kernelwidth = kernelsize/2;
+double sigma = 10;
 double[][] weightmatrix = new double[kernelsize][kernelsize];
 
 double blur(int x, int y) {
@@ -22,7 +22,7 @@ void createWM() {
   for (int i = 0; i < kernelsize; i++) {
     for (int j = 0; j < kernelsize; j++) {
       weightmatrix[i][j] = blur(j - kernelwidth, kernelwidth - i);
-      sum =+ weightmatrix[i][j];
+      sum += weightmatrix[i][j];
     }
   }
   for (int i = 0; i < kernelsize; i++) {
@@ -46,7 +46,12 @@ void setup () {
     img = loadImage(location);
     surface.setSize(img.width, img.height);
     createWM();
+    for (int i = 0; i < kernelsize; i++) {
+      for (int j = 0; j < kernelsize; j++) {
+      }
+    }
   }
+  noLoop();
 }
 
 
@@ -64,7 +69,7 @@ void draw() {
       double sumR = 0;
       double sumG = 0;
       double sumB = 0;
-      double sumA = 0;
+      //double sumA = 0;
 
       for (int i = 0; i < kernelsize; i++) {
         for (int j = 0; j < kernelsize; j++) {
@@ -76,13 +81,13 @@ void draw() {
             sumR += c*red(img.pixels[index]);
             sumG += c*green(img.pixels[index]);
             sumB += c*blue(img.pixels[index]);
-            sumA += c*alpha(img.pixels[index]);
+            //sumA += c*alpha(img.pixels[index]);
           }
         }
       }
-      pixels[loc] = color(Math.round(sumR), Math.round(sumG), Math.round(sumB), Math.round(sumA));
-      //System.out.println(Arrays.deepToString(kernel));    //DON'T RUN WITH THIS UNCOMMENTED UNLESS YOU CHANGE THE X/Y LIMITS ON THE TOP LEVEL FOR LOOPS TO Z TO Z+2 OR A SIMILAR RANGE
+      pixels[loc] = color(Math.round(sumR), Math.round(sumG), Math.round(sumB));
     }
   }
   updatePixels();
+  save("macplus2.jpg");
 }
